@@ -1,9 +1,9 @@
-// Server to listen to the port 8888
+//Create a Server to listen to the port 8888
 var http = require("http");
 var fs = require("fs");
 const os = require("os");
 const nodemailer = require("nodemailer");
-// var mailer = require('./mailer');
+var mailer = require('./mailer');
 // const plist = require("plist");
 
 var app = http.createServer((req, res) => {
@@ -13,6 +13,7 @@ var app = http.createServer((req, res) => {
       res.end();
       break;
 
+// To return the server OS and arch
     case "/serverdetails":
       res.write(
         "Platform : " +
@@ -39,6 +40,7 @@ var app = http.createServer((req, res) => {
       res.end();
       break;
 
+//API that is for showing any HTML page
     case "/html/page":
       res.writeHead(200, { "Content-Type": "text/html" });
       //   var file = fs.createReadStream("html/page.html");
@@ -51,6 +53,7 @@ var app = http.createServer((req, res) => {
       });
       break;
 
+      // API to create a text file and updating it with a text content.
     case "/textme":
       let success =
         "Author : Shyam, \n" + " Writing to the text file is successful";
@@ -61,14 +64,23 @@ var app = http.createServer((req, res) => {
         }
 
         console.log("file saved");
+        // res.write("file saved, check your app.js location");
       });
       res.end();
       break;
 
-    // case "/mailer":
-    //   mailer.printer();
-    //   res.end();
-    //   break;
+// API for email creation and sending it to REMYA Madam
+    case "/mailer":
+      mailer.printer();
+      res.end();
+      break;
+
+
+ // API for anyother condition will return bad request in console and in the page.     
+     default : 
+     res.write("Bad Request");
+    //  console.log("Bad Request");
+     res.end();
   }
 });
 app.listen(8888, "127.0.0.1");
